@@ -13,7 +13,7 @@
 
 ## Batch 2 — source adapter
 
-- [ ] T3 Create `internal/source`: SSE client satisfying `EventSource` —
+- [x] T3 Create `internal/source`: SSE client satisfying `EventSource` —
       connect, parse frames, `Last-Event-ID` resume, reconnect with bounded
       exponential backoff + jitter, context cancellation. Tests against an
       `httptest` fake server: happy path, malformed frame skipped (counted,
