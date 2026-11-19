@@ -1,0 +1,10 @@
+
+# harness installer backups (pre-update copies) — machine scratch
+harness/backup/
+
+# Go artifacts
+/bin/
+*.db
+*.db-shm
+*.db-wal
+.env

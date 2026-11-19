@@ -1,0 +1,65 @@
+{
+  "project": {
+    "name": "riu",
+    "parallel": false,
+    "modules": ["security-audit"],
+    "audit_level": "basic",
+    "workflow": "full",
+    "harness_version": "v0.12.0-1-gae19cc6",
+    "architecture": "hexagonal"
+  },
+  "features": [
+    {
+      "id": 1,
+      "name": "ingest_idempotent_store",
+      "title": "Live SSE ingest into an idempotent SQLite store",
+      "description": "Drink from Wikimedia EventStreams (recentchange) over SSE, normalize to the domain event, and persist idempotently to SQLite. Reconnect with bounded exponential backoff and resume via Last-Event-ID. Replaying the same events leaves row counts unchanged.",
+      "acceptance": [
+        "Live events land in SQLite; replaying the same events leaves row counts unchanged",
+        "Connection drops trigger reconnect with bounded backoff + jitter and resume via Last-Event-ID",
+        "SIGINT/context cancellation drains the pipeline and exits 0",
+        "A stats output reports received/persisted/duplicate counters",
+        "go test ./... -race -count=1 green: table-driven tests plus an httptest fake source (happy path, malformed JSON, drop+resume)"
+      ],
+      "status": "spec_ready"
+    },
+    {
+      "id": 2,
+      "name": "classification_projections",
+      "title": "Pure rule classifiers and rolling-window projections",
+      "description": "Classify events (bot vs human, size anomaly, wiki heat) with a pure rule engine and compute rolling-window projections (rates, top pages, leaderboards). No I/O: pure functions, table-driven tests. Introduces the worker pool over the classification port.",
+      "acceptance": [
+        "Classifiers are pure functions covered by table-driven tests",
+        "Rolling windows answer rate/top/leaderboard queries from the store",
+        "Worker pool fans out over the classification port with graceful drain",
+        "Race detector clean under concurrent classification"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "name": "live_dashboard",
+      "title": "SSE fan-out dashboard",
+      "description": "Fan out classified events and projections to browsers over SSE and render a lightweight dashboard (live table + charts).",
+      "acceptance": [
+        "Multiple concurrent dashboard clients receive live events without affecting ingest throughput",
+        "Slow dashboard clients do not block the pipeline (per-client buffers, drop policy)",
+        "Charts render rolling projections"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "name": "ai_scoring",
+      "title": "AI embeddings worker, anomaly scoring and mini-RAG CLI",
+      "description": "Phase 2 of the learning plan: a batch embeddings worker with rate limiting and exponential backoff behind a domain port, LLM-backed anomaly scoring of edits, and a mini-RAG CLI over the stored history.",
+      "acceptance": [
+        "Embeddings worker respects rate limits and backs off exponentially on 429/5xx",
+        "Anomaly scoring runs behind a port with a deterministic fake for tests",
+        "Mini-RAG CLI answers questions over stored history with a local model",
+        "AI adapters never leak into the domain package"
+      ],
+      "status": "pending"
+    }
+  ]
+}

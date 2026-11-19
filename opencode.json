@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permissions": {
+    "edit": "allow",
+    "bash": {
+      "harness/init.sh": "allow",
+      "go test ./... -race -count=1": "allow",
+      "go build ./...": "allow"
+    }
+  }
+}
