@@ -2,7 +2,9 @@
   "project": {
     "name": "riu",
     "parallel": false,
-    "modules": ["security-audit"],
+    "modules": [
+      "security-audit"
+    ],
     "audit_level": "basic",
     "workflow": "full",
     "harness_version": "v0.12.0-1-gae19cc6",
@@ -21,7 +23,7 @@
         "A stats output reports received/persisted/duplicate counters",
         "go test ./... -race -count=1 green: table-driven tests plus an httptest fake source (happy path, malformed JSON, drop+resume)"
       ],
-      "status": "spec_ready"
+      "status": "in_progress"
     },
     {
       "id": 2,

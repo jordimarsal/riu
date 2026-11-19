@@ -2,11 +2,11 @@
 
 ## Batch 1 — domain + store
 
-- [ ] T1 Create `internal/wikievent`: `Event` struct (pure — no net/http), the
+- [x] T1 Create `internal/wikievent`: `Event` struct (pure — no net/http), the
       `EventSource`/`EventStore` ports, and `ParseEvent([]byte) (Event, error)`
       with `%w`-wrapped errors. Table-driven tests including malformed JSON
       fixtures (truncated payload, wrong types, unknown `$schema`).
-- [ ] T2 Create `internal/store`: migrations (`events` table, unique index on
+- [x] T2 Create `internal/store`: migrations (`events` table, unique index on
       `(domain, meta_id)`), `InsertIfNew` idempotent upsert returning
       inserted/duplicate. Test: same event twice → one row, second call
       reports duplicate.
